@@ -78,12 +78,12 @@ export default function BadgeMint() {
   return (
     <div style={{ maxWidth: 680, margin: '0 auto' }}>
       <div style={{ marginBottom: 32 }}>
-        <div className="tag tag-purple" style={{ marginBottom: 12 }}>Minting Track - UGF Testnet</div>
+        <div className="tag tag-purple" style={{ marginBottom: 12 }}>No ETH needed</div>
         <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8, letterSpacing: '-0.02em' }}>
           Claim Your Badge
         </h1>
         <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.6, maxWidth: 500 }}>
-          Mint on-chain badges on Base Sepolia. Gas is paid in TYI Mock USD, so the user never needs ETH for this action.
+          Claim an achievement badge with test credits. UGF handles the onchain part behind the scenes.
         </p>
       </div>
 
@@ -93,14 +93,14 @@ export default function BadgeMint() {
           borderRadius: 10, padding: '12px 16px', marginBottom: 24,
           display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12
         }}>
-          <span style={{ fontSize: 13, color: 'var(--gold)' }}>You need TYI Mock USD to mint</span>
+          <span style={{ fontSize: 13, color: 'var(--gold)' }}>Add test credits to claim</span>
           <Link to="/onboard" className="btn btn-outline" style={{ fontSize: 12, padding: '5px 12px', whiteSpace: 'nowrap' }}>Get funds</Link>
         </div>
       )}
 
       {claimedBadges.length > 0 && !done && (
         <div className="card" style={{ marginBottom: 20, borderColor: 'rgba(34,197,94,0.35)' }}>
-          <div style={{ fontWeight: 800, marginBottom: 10 }}>Already minted</div>
+          <div style={{ fontWeight: 800, marginBottom: 10 }}>Already claimed</div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {claimedBadges.map(badge => (
               <span key={badge.id} className="tag tag-green">{badge.emoji} {badge.name}</span>
@@ -115,16 +115,16 @@ export default function BadgeMint() {
           borderRadius: 12, padding: '24px', marginBottom: 24, textAlign: 'center'
         }}>
           <div style={{ fontSize: 48, marginBottom: 8 }}>{done.badge.emoji}</div>
-          <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 4 }}>{done.badge.name} minted!</div>
-          <div style={{ color: 'var(--muted)', fontSize: 13, marginBottom: 12 }}>On-chain badge confirmed on Base Sepolia</div>
+          <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 4 }}>{done.badge.name} claimed!</div>
+          <div style={{ color: 'var(--muted)', fontSize: 13, marginBottom: 12 }}>Paid with test credits. UGF handled the gas.</div>
           {done.txHash && (
             <a href={`https://sepolia.basescan.org/tx/${done.txHash}`} target="_blank" rel="noopener"
               style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--accent2)' }}>
-              View tx on BaseScan
+              View receipt proof
             </a>
           )}
           <div style={{ marginTop: 16 }}>
-            <button className="btn btn-outline" style={{ fontSize: 13 }} onClick={() => setDone(null)}>Mint another</button>
+            <button className="btn btn-outline" style={{ fontSize: 13 }} onClick={() => setDone(null)}>Claim another</button>
           </div>
         </div>
       )}
@@ -162,10 +162,10 @@ export default function BadgeMint() {
 
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 12, color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>
                   <span style={{ background: 'rgba(45,212,191,0.1)', color: 'var(--accent2)', padding: '2px 8px', borderRadius: 99, fontWeight: 600 }}>
-                    ERC-721
+                    Badge
                   </span>
-                  <span>Base Sepolia</span>
-                  <span style={{ marginLeft: 'auto', color: 'var(--success)' }}>Gas-free</span>
+                  <span>No ETH needed</span>
+                  <span style={{ marginLeft: 'auto', color: 'var(--success)' }}>Credit paid</span>
                 </div>
 
                 <button
@@ -174,7 +174,7 @@ export default function BadgeMint() {
                   onClick={() => handleMint(badge)}
                   disabled={!address || tyi === 0 || !!minting || claimed}
                 >
-                  {claimed ? 'Already Minted' : minting === badge.id ? 'Minting...' : !address ? 'Connect wallet first' : tyi === 0 ? 'Need TYI funds' : 'Mint Badge'}
+                  {claimed ? 'Already Claimed' : minting === badge.id ? 'Claiming...' : !address ? 'Sign in first' : tyi === 0 ? 'Add credits' : 'Claim Badge'}
                 </button>
               </div>
             )
@@ -183,12 +183,12 @@ export default function BadgeMint() {
       )}
 
       <div className="card" style={{ marginTop: 32, fontSize: 13, color: 'var(--muted)', lineHeight: 1.8 }}>
-        <div style={{ fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>How minting works</div>
-        <div>1. Click Mint, then react-ugf opens the payment modal.</div>
-        <div>2. Modal quotes the TYI cost and the user approves.</div>
-        <div>3. UGF settles TYI and sponsors Base Sepolia gas.</div>
-        <div>4. sponsorAndExecute calls mint() on-chain.</div>
-        <div>5. Badge NFT lands in the user's wallet without manual ETH gas handling.</div>
+        <div style={{ fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>Behind the scenes</div>
+        <div>1. You click Claim Badge.</div>
+        <div>2. Your wallet asks for approval so you stay in control.</div>
+        <div>3. UGF uses test credits, handles gas, and completes the claim.</div>
+        <div>4. The badge is recorded on Base Sepolia.</div>
+        <div>5. You get a receipt/proof link after completion.</div>
       </div>
 
       {!BADGE_CONTRACT && (

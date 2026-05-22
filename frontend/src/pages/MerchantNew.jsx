@@ -13,12 +13,11 @@ export default function MerchantNew() {
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
   const handleSubmit = async () => {
-    if (!address) { setError('Connect wallet first'); return }
+    if (!address) { setError('Sign in first'); return }
     if (!form.name || !form.price_usd) { setError('Name and price are required'); return }
     try {
       setLoading(true)
       setError(null)
-      // Ensure merchant is registered
       await api.post('/merchants', { wallet: address, business_name: address })
       await api.post('/merchants/me/products', form)
       navigate('/merchant/dashboard')
@@ -33,13 +32,16 @@ export default function MerchantNew() {
 
   return (
     <div style={{ maxWidth: 520, margin: '0 auto' }}>
-      <button className="btn btn-ghost" style={{ marginBottom: 24, fontSize: 13 }} onClick={() => navigate(-1)}>← Back</button>
-      <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 24 }}>New Product</h2>
+      <button className="btn btn-ghost" style={{ marginBottom: 24, fontSize: 13 }} onClick={() => navigate(-1)}>Back</button>
+      <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 8 }}>New Checkout Item</h2>
+      <p style={{ color: 'var(--muted)', fontSize: 13, lineHeight: 1.6, marginBottom: 24 }}>
+        This is a normal dashboard action. Creating an item does not spend credits.
+      </p>
 
       <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         <div>
-          <label style={labelStyle}>Product Name</label>
-          <input placeholder="Monthly Newsletter" value={form.name} onChange={e => set('name', e.target.value)} />
+          <label style={labelStyle}>Item Name</label>
+          <input placeholder="Hackathon Coffee" value={form.name} onChange={e => set('name', e.target.value)} />
         </div>
         <div>
           <label style={labelStyle}>Description</label>
@@ -47,8 +49,8 @@ export default function MerchantNew() {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           <div>
-            <label style={labelStyle}>Price (USD)</label>
-            <input type="number" min="0.01" step="0.01" placeholder="5.00" value={form.price_usd} onChange={e => set('price_usd', e.target.value)} />
+            <label style={labelStyle}>Price</label>
+            <input type="number" min="0.01" step="0.01" placeholder="0.01" value={form.price_usd} onChange={e => set('price_usd', e.target.value)} />
           </div>
           <div>
             <label style={labelStyle}>Type</label>
@@ -66,7 +68,7 @@ export default function MerchantNew() {
         {error && <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, padding: 12, fontSize: 13, color: 'var(--error)' }}>{error}</div>}
 
         <button className="btn btn-primary" style={{ justifyContent: 'center', padding: 14, fontSize: 15 }} onClick={handleSubmit} disabled={loading}>
-          {loading ? 'Creating…' : 'Create Product'}
+          {loading ? 'Creating...' : 'Create Item'}
         </button>
       </div>
     </div>

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { Outlet, NavLink, useNavigate } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
 import { useWallet } from '../hooks/useWallet.jsx'
 import api, { authApi } from '../utils/api'
 
 export default function Layout() {
   const { address, connect, disconnect } = useWallet()
-  const navigate = useNavigate()
-  const [tyi, setTyi] = useState(null)
+  const [credits, setCredits] = useState(null)
 
   useEffect(() => {
     if (address) {
-      api.get('/faucet/balance').then(r => setTyi(parseFloat(r.data.tyi).toFixed(2))).catch(() => {})
+      api.get('/faucet/balance').then(r => setCredits(parseFloat(r.data.tyi).toFixed(2))).catch(() => {})
     } else {
-      setTyi(null)
+      setCredits(null)
     }
   }, [address])
 
@@ -31,7 +30,7 @@ export default function Layout() {
     disconnect()
   }
 
-  const short = a => a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''
+  const short = a => a ? `${a.slice(0, 6)}...${a.slice(-4)}` : ''
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -51,7 +50,7 @@ export default function Layout() {
         </NavLink>
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          {[['/', 'Shop'], ['/profile', 'Profile'], ['/mint', 'Mint Badge'], ['/history', 'History'], ['/merchant/dashboard', 'Merchant']].map(([to, label]) => (
+          {[['/', 'Claim'], ['/profile', 'Account'], ['/history', 'Receipts'], ['/merchant/dashboard', 'Creator']].map(([to, label]) => (
             <NavLink key={to} to={to} style={({ isActive }) => ({
               padding: '6px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600,
               color: isActive ? 'var(--accent)' : 'var(--muted)',
@@ -62,25 +61,24 @@ export default function Layout() {
 
           {address ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              {/* TYI balance chip */}
-              {tyi !== null && (
-                <NavLink to={parseFloat(tyi) === 0 ? '/onboard' : '#'} style={{
+              {credits !== null && (
+                <NavLink to={parseFloat(credits) === 0 ? '/onboard' : '/profile'} style={{
                   display: 'flex', alignItems: 'center', gap: 6,
-                  background: parseFloat(tyi) === 0 ? 'rgba(245,158,11,0.12)' : 'rgba(45,212,191,0.1)',
-                  border: `1px solid ${parseFloat(tyi) === 0 ? 'rgba(245,158,11,0.3)' : 'rgba(45,212,191,0.25)'}`,
+                  background: parseFloat(credits) === 0 ? 'rgba(245,158,11,0.12)' : 'rgba(45,212,191,0.1)',
+                  border: `1px solid ${parseFloat(credits) === 0 ? 'rgba(245,158,11,0.3)' : 'rgba(45,212,191,0.25)'}`,
                   borderRadius: 99, padding: '4px 12px', fontSize: 12,
                   fontFamily: 'var(--font-mono)', fontWeight: 500,
-                  color: parseFloat(tyi) === 0 ? 'var(--gold)' : 'var(--accent2)'
+                  color: parseFloat(credits) === 0 ? 'var(--gold)' : 'var(--accent2)'
                 }}>
-                  {parseFloat(tyi) === 0 ? '⚠ Get TYI funds' : `$${tyi} TYI`}
+                  {parseFloat(credits) === 0 ? 'Add test credits' : `$${credits} credits`}
                 </NavLink>
               )}
               <NavLink to="/profile" style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--muted)' }}>{short(address)}</NavLink>
-              <button className="btn btn-outline" style={{ padding: '6px 14px', fontSize: 13 }} onClick={handleDisconnect}>Disconnect</button>
+              <button className="btn btn-outline" style={{ padding: '6px 14px', fontSize: 13 }} onClick={handleDisconnect}>Sign out</button>
             </div>
           ) : (
             <button className="btn btn-primary" style={{ padding: '8px 18px', fontSize: 13 }} onClick={handleConnect}>
-              Connect Wallet
+              Sign in
             </button>
           )}
         </div>

@@ -35,10 +35,10 @@ export default function History() {
 
   return (
     <div>
-      <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 24 }}>Transaction History</h2>
+      <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 24 }}>Receipts</h2>
       {loading ? <div style={{ color: 'var(--muted)', fontFamily: 'var(--font-mono)', fontSize: 13 }}>Loading...</div>
         : txns.length === 0 && badges.length === 0 ? (
-          <div className="card" style={{ textAlign: 'center', padding: '48px', color: 'var(--muted)' }}>No transactions or badges yet.</div>
+          <div className="card" style={{ textAlign: 'center', padding: '48px', color: 'var(--muted)' }}>No receipts yet.</div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {badges.map(badge => (
@@ -48,11 +48,11 @@ export default function History() {
                   <div>
                     <div style={{ fontWeight: 600, fontSize: 14 }}>{badge.name}</div>
                     <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--muted)', marginTop: 3 }}>
-                      ERC-721 badge on Base Sepolia
+                      Badge receipt
                     </div>
                   </div>
                 </div>
-                <span className="tag tag-green">minted</span>
+                <span className="tag tag-green">claimed</span>
               </div>
             ))}
 
@@ -62,7 +62,7 @@ export default function History() {
                   <div style={{ fontWeight: 600, fontSize: 14 }}>{tx.product_name}</div>
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--muted)', marginTop: 3 }}>
                     {new Date(tx.created_at).toLocaleString()}
-                    {tx.tx_hash && <> · <a href={`https://sepolia.basescan.org/tx/${tx.tx_hash}`} target="_blank" rel="noopener" style={{ color: 'var(--accent2)' }}>View tx</a></>}
+                    {tx.tx_hash && <> · <a href={`https://sepolia.basescan.org/tx/${tx.tx_hash}`} target="_blank" rel="noopener" style={{ color: 'var(--accent2)' }}>View proof</a></>}
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>

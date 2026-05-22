@@ -23,24 +23,24 @@ export default function MerchantDashboard() {
 
   if (!address) return (
     <div className="card" style={{ textAlign: 'center', padding: '48px', color: 'var(--muted)' }}>
-      Connect wallet to access merchant dashboard.
+      Sign in to access the creator dashboard.
     </div>
   )
 
-  if (loading) return <div style={{ color: 'var(--muted)', fontFamily: 'var(--font-mono)', fontSize: 13 }}>Loading…</div>
+  if (loading) return <div style={{ color: 'var(--muted)', fontFamily: 'var(--font-mono)', fontSize: 13 }}>Loading...</div>
 
   const stats = [
     { label: 'Total Revenue', value: `$${data?.total_revenue || '0.00'}`, color: 'var(--accent2)' },
-    { label: 'Transactions', value: data?.tx_count || 0, color: 'var(--accent)' },
-    { label: 'Products', value: products.length, color: 'var(--gold)' },
+    { label: 'Receipts', value: data?.tx_count || 0, color: 'var(--accent)' },
+    { label: 'Checkout Items', value: products.length, color: 'var(--gold)' },
     { label: 'Pending Payout', value: `$${data?.pending_payout || '0.00'}`, color: 'var(--success)' },
   ]
 
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 800 }}>Merchant Dashboard</h2>
-        <Link to="/merchant/products/new" className="btn btn-primary">+ New Product</Link>
+        <h2 style={{ fontSize: 22, fontWeight: 800 }}>Creator Dashboard</h2>
+        <Link to="/merchant/products/new" className="btn btn-primary">+ New Item</Link>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 24 }}>
@@ -67,9 +67,9 @@ export default function MerchantDashboard() {
       )}
 
       <div className="card">
-        <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 16, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Products</h3>
+        <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 16, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Checkout Items</h3>
         {products.length === 0 ? (
-          <p style={{ color: 'var(--muted)', fontSize: 13 }}>No products yet. <Link to="/merchant/products/new" style={{ color: 'var(--accent)' }}>Create your first →</Link></p>
+          <p style={{ color: 'var(--muted)', fontSize: 13 }}>No items yet. <Link to="/merchant/products/new" style={{ color: 'var(--accent)' }}>Create your first</Link></p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {products.map(p => (
@@ -80,7 +80,7 @@ export default function MerchantDashboard() {
                 </div>
                 <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
                   <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent2)' }}>${p.price_usd}</span>
-                  <Link to={`/pay/${p.id}`} className="btn btn-outline" style={{ padding: '5px 12px', fontSize: 12 }}>Pay link ↗</Link>
+                  <Link to={`/pay/${p.id}`} className="btn btn-outline" style={{ padding: '5px 12px', fontSize: 12 }}>Checkout link</Link>
                 </div>
               </div>
             ))}

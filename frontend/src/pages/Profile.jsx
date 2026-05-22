@@ -29,18 +29,18 @@ export default function Profile() {
   }, [address])
 
   const short = value => value ? `${value.slice(0, 8)}...${value.slice(-6)}` : ''
-  const tyi = balance ? Number(balance.tyi) : 0
-  const readyForDemo = tyi >= 0.01
+  const credits = balance ? Number(balance.tyi) : 0
+  const ready = credits >= 0.01
 
   if (!address) {
     return (
       <div style={{ maxWidth: 560, margin: '36px auto' }}>
         <div className="card" style={{ textAlign: 'center' }}>
-          <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8 }}>Wallet Profile</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8 }}>Account</h1>
           <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.6, marginBottom: 20 }}>
-            Connect MetaMask to see your Base Sepolia ETH, TYI Mock USD, and demo readiness.
+            Sign in to see your test credits and claim readiness.
           </p>
-          <button className="btn btn-primary" style={{ justifyContent: 'center' }} onClick={connect}>Connect Wallet</button>
+          <button className="btn btn-primary" style={{ justifyContent: 'center' }} onClick={connect}>Sign in</button>
         </div>
       </div>
     )
@@ -50,11 +50,11 @@ export default function Profile() {
     <div style={{ display: 'grid', gap: 18 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16 }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 6 }}>Wallet Profile</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 6 }}>Account</h1>
           <p style={{ color: 'var(--muted)', fontSize: 13, fontFamily: 'var(--font-mono)' }}>{short(address)}</p>
         </div>
-        <span className={`tag ${readyForDemo ? 'tag-green' : 'tag-yellow'}`}>
-          {readyForDemo ? 'Ready for demo' : 'Needs TYI'}
+        <span className={`tag ${ready ? 'tag-green' : 'tag-yellow'}`}>
+          {ready ? 'Ready to claim' : 'Add credits'}
         </span>
       </div>
 
@@ -65,30 +65,30 @@ export default function Profile() {
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
-        <Metric label="TYI Mock USD" value={loading ? 'Loading...' : `${balance?.tyi ?? '0.00'} TYI`} tone="green" />
-        <Metric label="Base Sepolia ETH" value={loading ? 'Loading...' : `${balance?.eth ?? '0.000000'} ETH`} tone="purple" />
-        <Metric label="Payments Made" value={`${history.length}`} tone="gold" />
+        <Metric label="Account Credits" value={loading ? 'Loading...' : `$${balance?.tyi ?? '0.00'}`} tone="green" />
+        <Metric label="Receipts" value={`${history.length}`} tone="gold" />
+        <Metric label="Advanced ETH Balance" value={loading ? 'Loading...' : `${balance?.eth ?? '0.000000'} ETH`} tone="purple" />
       </div>
 
       <div className="card" style={{ display: 'grid', gap: 14 }}>
         <div>
-          <div style={{ fontWeight: 800, marginBottom: 6 }}>Demo Safety</div>
+          <div style={{ fontWeight: 800, marginBottom: 6 }}>How to demo safely</div>
           <p style={{ color: 'var(--muted)', fontSize: 13, lineHeight: 1.6 }}>
-            Use the $0.01 product for the final live payment. Listing products and viewing pages does not spend ETH or TYI.
+            Use one claim or the $0.01 checkout item for the live demo. Browsing pages and creating checkout items do not spend credits.
           </p>
         </div>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <Link className="btn btn-primary" to="/">Go to Shop</Link>
-          <Link className="btn btn-outline" to="/history">View History</Link>
-          <a className="btn btn-outline" href={`https://sepolia.basescan.org/address/${address}`} target="_blank" rel="noopener">BaseScan</a>
+          <Link className="btn btn-primary" to="/mint">Claim Badge</Link>
+          <Link className="btn btn-outline" to="/history">View Receipts</Link>
+          <a className="btn btn-outline" href={`https://sepolia.basescan.org/address/${address}`} target="_blank" rel="noopener">Advanced proof</a>
         </div>
       </div>
 
       <div className="card" style={{ display: 'grid', gap: 10 }}>
-        <div style={{ fontWeight: 800 }}>Token Details</div>
-        <Row label="Wallet" value={address} />
-        <Row label="TYI token" value={TYI_ADDRESS} />
-        <Row label="Network" value="Base Sepolia, chain 84532" />
+        <div style={{ fontWeight: 800 }}>Advanced details</div>
+        <Row label="Account" value={address} />
+        <Row label="Credit token" value={TYI_ADDRESS} />
+        <Row label="Test network" value="Base Sepolia, chain 84532" />
       </div>
     </div>
   )
